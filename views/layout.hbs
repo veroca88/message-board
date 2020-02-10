@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{{title}}</title>
+  {{!-- assure that the link to your css is always the last link tag after the others in order to have your styles take effect over all others you may have linked to your app as well --}}
+  {{!-- links will always go in the head to make sure they load prior to the site loading and therefore the user will not have to look at a none styled page prior to it finishing loading --}}
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body class="{{bodyClass}}">
+
+  {{!-- we will place the nav in the layout file since this is what loads on all pages. Since you want to have the nav present in all your pages, it would make sense to place it here instead of having to copy your nav into every view page that you create. --}}
+  <nav>
+    {{!-- here we separate the links into divs in order to use flexbox to space the links out to each end of the screen. (auth links to the far right and other links for the app in the far left) --}}
+    <div>
+      <a href="/">Home</a>
+      <a href="/boards">Boards</a>
+    </div>
+    <div>
+      {{!-- I use conditional rendering here to choose whether to display login and signup or just logout based on the global variable that was set up in the app.js using res.locals.currentUser --}}
+      {{!-- if currentUser exists (a person has logged in), then I just want to show the logout link. Else I will display the login and signup links --}}
+      {{#if currentUser}}
+      <span>Hi, {{ currentUser.username }}</span>
+      <img src={{currentUser.avatar}} alt="avatar">
+      <a href="/auth/logout">Logout</a>
+      {{else}}
+      <a href="/auth/login">Login</a>
+      <a href="/auth/signup">Signup</a>
+      {{/if}}
+    </div>
+  </nav>
+
+  {{{body}}}
+
+  {{!-- since we cannot use the dependencies to import to our script file we would have to use the cdn in order to use axios in our script. --}}
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  {{!-- always put your js file at the very bottom of all your scripts in order to make sure that your code will override any that came prior to it --}}
+  {{!-- its a good idea to put your script tags at the bottom of your body so that after the content of the page loads your scripts can run. This is especially important when using DOM Manipulation as it assures that you will be able to find the html elements that you are targeting since they would have loaded on the page prior to your script checking to see if they exists --}}
+  <script src="/javascripts/script.js"></script>
+</body>
+
+</html>

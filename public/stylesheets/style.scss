@@ -1,0 +1,82 @@
+// body {
+//     padding: 50px;
+//     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+// }
+
+// a {
+//     color: #00b7ff;
+// }
+
+// when you first use irongenerate, make sure that you remove any styling that is in your css file so that it does not effect the styling that you are trying to achieve.
+
+body {
+    margin: 0;
+    padding: 5vw 5vw 0;
+    height: 87.2vh;
+    background-color: burlywood;
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 5vw;
+        align-items: center;
+        height: 5vw;
+        background-color: lightslategrey;
+        position: fixed;
+        top: 0;
+        width: 90vw;
+        margin: 0 -5vw;
+
+        div {
+            width: fit-content;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            a {
+                margin: 0.3rem;
+                text-decoration: none;
+            }
+        }
+
+        img {
+            height: 3.5rem;
+            width: 3.8rem;
+            margin: 0 0.5rem;
+        }
+    }
+
+    form {
+        display: flex;
+        align-items: center;
+
+        &.auth-form {
+            display: table-caption;
+            width: 12rem;
+        }
+    }
+
+    .board {
+        &__board-names {
+            display: flex;
+            align-items: center;
+
+            a {
+                margin-right: 0.3rem;
+            }
+        }
+    }
+
+    .messages {
+        &__hr {
+            border: 0.4px solid mediumaquamarine;
+        }
+
+        &__message-div {
+            border: 1px solid black;
+            border-bottom: 2px solid black;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
+        }
+    }
+}

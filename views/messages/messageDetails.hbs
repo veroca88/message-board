@@ -1,0 +1,13 @@
+<h1>Message Details</h1>
+
+<h2>{{messageFromDB.message}}</h2>
+
+<ul>
+  {{#each messageFromDB.replies}}
+  {{#if this}}
+  <li>{{this.reply}}</li>
+  {{else}}
+  <h3>No Replies to This Message</h3>
+  {{/if}}
+  {{/each}}
+</ul>

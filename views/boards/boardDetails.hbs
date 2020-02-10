@@ -1,0 +1,44 @@
+<h1>{{board.title}}</h1>
+
+<form action="/messages/create/{{board._id}}">
+  <label for="messageInput"> Message </label>
+  <input id="messageInput" type="text" name="message">
+
+  <button onclick="createMessage(event)"> Send Message </button>
+</form>
+
+<div id="boardMessages">
+  {{#if noMessages}}
+  <h3>There are currently no messages to display</h3>
+  {{else}}
+  {{#each board.messages}}
+  <div class="messages__message-div">
+    <h4>{{this.author.username}}</h4>
+    <div>
+      <h3>{{this.message}}</h3>
+    </div>
+
+    {{!-- this should be set to be only be visible if the author of the message is the current user. For this we can run a check server side and pass a key with a boolean value to the message prior to the page rendering which we can then use in an if conditional render in hbs. --}}
+    <form action="/messages/delete/{{this._id}}/{{../board._id}}" method="POST"><button>X</button></form>
+    {{!-- if you need to get the variable from outside of an each in hbs, you must first path out of the each you are in by using ../ --}}
+
+    <hr class="messages__hr">
+    <div>
+      {{!-- in order to select a specific index when using handlebars, you need to add a . before the index itself. You can then either put just the number of the index or wrap the number in [] like you normally would. (I recommend you just use the [] to not get confused when calling arrays normally)  --}}
+
+      <h4>{{this.replies.[0].reply}}</h4>
+
+      <a href="/messages/details/{{this._id}}">{{this.replies.length}} Replies</a>
+
+      <form action="/replies/create/{{this._id}}">
+        {{!-- in hbs if you need to get the index of an array you can do so with @index, the thing is that the index will start at 1 not 0 --}}
+        <label for="replyInput{{@index}}"> Reply </label>
+        <input id="replyInput{{@index}}" type="text" name="reply">
+
+        <button onclick="createReply(event)"> Send Reply </button>
+      </form>
+    </div>
+  </div>
+  {{/each}}
+  {{/if}}
+</div>

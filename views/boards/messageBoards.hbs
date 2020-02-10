@@ -1,0 +1,31 @@
+<h1>Message Boards</h1>
+
+<form action="/boards/create" method="post">
+  <label for="titleInput"> Title </label>
+  <input id="titleInput" type="text" name="title">
+
+  <button> Create Board </button>
+</form>
+
+<div>
+  <ul>
+    {{#if noBoards}}
+
+    <h3> There are no boards to display at this time. Be the first to create a new board! </h3>
+
+    {{else}}
+
+    {{#each boards}}
+    <li>
+      <div class="board__board-names">
+        <a href="/boards/details/{{this._id}}">{{this.title}}</a>
+        {{#if this.isOwner}}
+        <form action="/boards/delete/{{this._id}}" method="POST"><button>X</button></form>
+        {{/if}}
+      </div>
+    </li>
+    {{/each}}
+
+    {{/if}}
+  </ul>
+</div>
