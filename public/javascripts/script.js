@@ -9,7 +9,7 @@ document.addEventListener(
             () => {
                 checkMessageUpdates();
             },
-            bodyTag === "messageBoardDetails" ? 5000 : 0
+            bodyTag === "messageBoardDetails" ? 3000 : 0
         );
     },
 
@@ -22,16 +22,14 @@ const checkMessageUpdates = () => {
         reply => reply.value === ""
     );
 
-    // If we are in the messageBoard and there is no reply typing we will get any new messages with AJAX
+    // If we are in the messageBoard and there is no reply typing we will get any new messages with AJAX/Axios
     if (bodyTag === "messageBoardDetails" && replyTyped) {
         const location = window.location;
-        console.log({ location });
 
         // Axios get call is made to get any update for the board we are on
         axios
             .get(`${location.origin}${location.pathname}/refresh`)
             .then(boardInfo => {
-                console.log({ boardInfo });
                 appendInfoToBoardPage(boardInfo);
             })
             .catch(error =>
@@ -41,7 +39,6 @@ const checkMessageUpdates = () => {
 };
 
 const appendInfoToBoardPage = boardInfoData => {
-    console.log({ boardInfoData });
     // Get all the messages in reversed order and select dom element on which to display the messages
     const reversedMessages = boardInfoData.data.messages.reverse();
     const divOfMessages = document.getElementById("boardMessages");
@@ -62,7 +59,6 @@ const appendInfoToBoardPage = boardInfoData => {
 
     // for each of the messages we create a div with user which created it, message content, delete button, and any reply message we find
     reversedMessages.forEach((message, index) => {
-        console.log({ message });
         const messageDiv = document.createElement("div");
         messageDiv.className = "messages__message-div";
 
@@ -105,7 +101,6 @@ const createMessage = async event => {
 
     // when using async-await we need to surround asynchronous code with try and catch blocks in order to handle any errors
     try {
-        console.log({ event });
         let messageInput = event.target.form.elements[0];
         const boardId = getIdFromEvent(event);
 
@@ -115,10 +110,12 @@ const createMessage = async event => {
             { message: messageInput.value }
         );
 
-        const addMessageToBoard = await axios.get(
+        // once the message is created, we will then make another axios call to the board route in order to add the newly created message to the board that it belongs to.
+        await axios.get(
             `${window.location.origin}/boards/add-message/${boardId}/${messageCreation.data.newlyCreatedMessage._id}`
         );
 
+        // here we clear out the message input tag after we finish processing the axios calls in order to save the new message to the DB.
         messageInput.value = "";
     } catch (error) {
         console.log("Error Creating Message: ", { error });
@@ -131,7 +128,6 @@ const createReply = async event => {
     try {
         // get the text message of the reply
         let replyInput = event.target.form.elements[0];
-        console.log({ replyInput, event });
 
         // get the id to which the reply relates to
         const messageId = getIdFromEvent(event);
@@ -142,9 +138,8 @@ const createReply = async event => {
             { reply: replyInput.value }
         );
 
+        // after the user replies to a message we will clear out the reply input field.
         replyInput.value = "";
-
-        console.log({ creatingReply });
     } catch (error) {
         console.log("Error creating reply ", { error });
     }
@@ -152,7 +147,6 @@ const createReply = async event => {
 
 // this returns the id of the message or board that the event is relating to
 const getIdFromEvent = event => {
-    console.log({ formElements: event.target.form.elements[0].value });
     // match returns an array from a string of all the elements that match regex that we pass in as argument
     return event.target.form.action.match(/https?.*\/(.*)\??/)[1];
 };

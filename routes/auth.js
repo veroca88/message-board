@@ -10,7 +10,8 @@ const bcryptSalt = 10;
 router.get("/login", (req, res, next) => {
     res.render("auth/login", { message: req.flash("error") });
 });
-
+// this is the post route when using passport to login the user.
+// Since we are using sessions to log in the user, we will not be using the passport method for user login.
 // router.post(
 //     "/login",
 //     passport.authenticate("local", {
@@ -98,6 +99,7 @@ router.post("/signup", (req, res, next) => {
 });
 
 router.get("/logout", (req, res) => {
+    // when using passport we can log the user out by calling req.logout(). Since we are not using passport we have to call req.session.destroy() in order to kill the session and remove the data it is currently storing.
     // req.logout();
     req.session.destroy();
     res.redirect("/");

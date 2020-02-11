@@ -16,11 +16,9 @@ router.get("/", (req, res, next) => {
                         : false
                 };
                 // board.isOwner = board.author._id === req.session.user._id;
-                console.log({ obj });
                 return obj;
             });
 
-            console.log({ boardsArray });
             const data = {
                 boards: boardsArray,
                 // here we can use noBoards as a variable that can be called on the view page in order to use {{#if noBoards}} for conditional display.
@@ -36,7 +34,6 @@ router.get("/", (req, res, next) => {
 // we will be calling this route from our script file and will place it before the initial details route so that we can catch the /refresh at the end of the endpoint
 // we are also using the same endpoint because it will require less coding to grab the url in our script file and thus we will not have to modify the url much.
 router.get("/details/:boardId/refresh", (req, res, next) => {
-    console.log("calling the board: ", req.params.boardId);
     Board.findById(req.params.boardId)
         .populate({
             path: "messages",
@@ -44,10 +41,7 @@ router.get("/details/:boardId/refresh", (req, res, next) => {
         })
         .populate("followers")
         .then(boardFromDB => {
-            // console.log(">>>>>>>>>>>>>>>>> ", {
-            //     boardFromDB,
-            //     messages: boardFromDB.messages
-            // });
+            // in order to get the information from this route via an axios call, we will have to use a json response. We use render to display a view page and redirect to reroute to another route within the apps get routes.
             res.status(200).json(boardFromDB);
         })
         .catch(err => next(err));
@@ -72,11 +66,6 @@ router.get("/details/:boardId", (req, res, next) => {
             };
             // here we will set the local variable for the bodyClass to be something other than what we set in app.js in order to track the page change. We can then use this for styling or script file(which is what we will be using it for).
             res.locals.bodyClass = "messageBoardDetails";
-
-            console.log("===============", {
-                boardFromDB,
-                messages: boardFromDB.messages
-            });
 
             res.render("boards/boardDetails", data);
         })
@@ -128,11 +117,6 @@ router.post("/delete/:boardId", (req, res, next) => {
 
     Board.findByIdAndDelete(req.params.boardId)
         .then(() => {
-            console.log({
-                user: req.session.user,
-                userBoards: req.session.user.userBoards,
-                params: req.params.boardId
-            });
             User.findByIdAndUpdate(
                 req.session.user._id,
                 { $pull: { userBoards: req.params.boardId } },
@@ -175,7 +159,6 @@ router.post("/followers/:boardId", (req, res, next) => {
 
 // this route is another update route that we will use in order to add messages to the board
 router.get("/add-message/:boardId/:messageId", (req, res, next) => {
-    console.log({ params: req.params });
     // when updating we must add {new: true} in order to get the updated information from the db, otherwise you will get the information that is on the db prior to the update
     Board.findByIdAndUpdate(
         req.params.boardId,

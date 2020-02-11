@@ -15,13 +15,9 @@ router.post("/create/:messageId", (req, res, next) => {
     const theReply = req.body;
     theReply.author = req.session.user._id;
 
-    console.log({ body: req.body });
-
     // create a new reply message, and once we have it push the reference _id of the reply to it onto the original message
     Reply.create(theReply)
         .then(newlyCreatedReply => {
-            console.log({ newlyCreatedReply });
-
             // find the message we reply to from params and update it with the reference to the reply
             Message.findByIdAndUpdate(
                 req.params.messageId,
@@ -29,7 +25,6 @@ router.post("/create/:messageId", (req, res, next) => {
                 { new: true }
             )
                 .then(updatedMessage => {
-                    console.log({ newlyCreatedReply, updatedMessage });
                     res.status(200).json(updatedMessage);
                 })
                 .catch(err => next(err));

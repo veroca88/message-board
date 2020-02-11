@@ -41,7 +41,6 @@ router.post("/create/:boardId", (req, res, next) => {
     const theMessage = req.body;
     theMessage.author = req.session.user._id;
 
-    console.log({ theMessage, body: req.body });
     // create a new message and send it back in json format
     Message.create(theMessage)
         .then(newlyCreatedMessage => {
@@ -52,7 +51,6 @@ router.post("/create/:boardId", (req, res, next) => {
 
 // Deleting message - First delete the reference to the message from the Board that had the message on it and after delete the message itself
 router.post("/delete/:messageId/:boardId", (req, res, next) => {
-    console.log({ params: req.params });
     // find the board and remove the reference to the message that is being deleted
     Board.findByIdAndUpdate(
         req.params.boardId,
