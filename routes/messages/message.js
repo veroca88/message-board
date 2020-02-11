@@ -42,7 +42,7 @@ router.post("/create/:boardId", (req, res, next) => {
     theMessage.author = req.session.user._id;
 
     console.log({ theMessage, body: req.body });
-    // create a new message and send it back 
+    // create a new message and send it back in json format
     Message.create(theMessage)
         .then(newlyCreatedMessage => {
             res.status(200).json({ newlyCreatedMessage });
@@ -60,7 +60,7 @@ router.post("/delete/:messageId/:boardId", (req, res, next) => {
         { new: true }
     )
         .then(() => {
-            // remove the message itself
+            // remove the message itself and redirect user to the previous page
             Message.findByIdAndDelete(req.params.messageId)
                 .then(() => {
                     res.redirect("back");

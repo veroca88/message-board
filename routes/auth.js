@@ -21,15 +21,20 @@ router.get("/login", (req, res, next) => {
 //     })
 // );
 router.post("/login", (req, res, next) => {
+
+    // Find the user by the username
     User.findOne({ username: req.body.username })
         .then(userFromDB => {
+
+            // If a user is not returned from a DB, send back message that no such user exists in DB
             if (userFromDB === null) {
                 res.render("auth/login", {
                     message: "That username was not found in the system"
                 });
                 return;
             }
-
+            
+            // Compare users encrypted password with an encrition from DB and redirect to home page if they match otherwise redirect to login
             if (bcrypt.compareSync(req.body.password, userFromDB.password)) {
                 req.session.user = userFromDB;
                 res.redirect("/");
@@ -45,9 +50,13 @@ router.get("/signup", (req, res, next) => {
     res.render("auth/signup");
 });
 
+// user signup
 router.post("/signup", (req, res, next) => {
+    // get the username and password from the request
     const username = req.body.username;
     const password = req.body.password;
+
+    // make sure that we have both of the fields as nonempty characters // it is not a bad idea for this to also be done on the frontend
     if (username === "" || password === "") {
         res.render("auth/signup", {
             message: "Indicate username and password"
@@ -55,6 +64,7 @@ router.post("/signup", (req, res, next) => {
         return;
     }
 
+    // check if the username is already registered in the database and if so return the message
     User.findOne({ username }, "username", (err, user) => {
         if (user !== null) {
             res.render("auth/signup", {
@@ -63,6 +73,7 @@ router.post("/signup", (req, res, next) => {
             return;
         }
 
+        // if all of the checks have passed we encrypt the password and create a new user
         const salt = bcrypt.genSaltSync(bcryptSalt);
         const hashPass = bcrypt.hashSync(password, salt);
 
@@ -71,6 +82,8 @@ router.post("/signup", (req, res, next) => {
             password: hashPass
         });
 
+
+        // save new user to the database and then set his session 
         newUser
             .save()
             .then(newlyCreatedUser => {
