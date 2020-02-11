@@ -19,9 +19,13 @@ document.addEventListener(
 const checkMessageUpdates = () => {
     // If reply is typed no update happens
     const replyTyped = [...document.getElementsByName('reply')].every(reply => reply.value === '');
+
+    // If we are in the messageBoard and there is no reply typing we will get any new messages with AJAX
     if (bodyTag === "messageBoardDetails" && replyTyped) {
         const location = window.location;
         console.log({ location });
+
+        // Axios get call is made
         axios
             .get(`${location.origin}${location.pathname}/refresh`)
             .then(boardInfo => {

@@ -35,11 +35,14 @@ router.post("/update/:messageId/:replyId", (req, res, next) => {
         .catch(err => next(err));
 });
 
+// Create a new message
 router.post("/create/:boardId", (req, res, next) => {
+    // Logged in user is set as the messages author and the message is grabed from the body
     const theMessage = req.body;
     theMessage.author = req.session.user._id;
 
     console.log({ theMessage, body: req.body });
+    // create a new message and send it back 
     Message.create(theMessage)
         .then(newlyCreatedMessage => {
             res.status(200).json({ newlyCreatedMessage });
@@ -47,14 +50,17 @@ router.post("/create/:boardId", (req, res, next) => {
         .catch(err => next(err));
 });
 
+// Deleting message - First delete the reference to the message from the Board that had the message on it and after delete the message itself
 router.post("/delete/:messageId/:boardId", (req, res, next) => {
     console.log({ params: req.params });
+    // find the board and remove the reference to the message that is being deleted
     Board.findByIdAndUpdate(
         req.params.boardId,
         { $pull: { messages: req.params.messageId } },
         { new: true }
     )
         .then(() => {
+            // remove the message itself
             Message.findByIdAndDelete(req.params.messageId)
                 .then(() => {
                     res.redirect("back");
