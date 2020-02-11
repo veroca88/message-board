@@ -25,6 +25,7 @@ const userSchema = new Schema(
         // the users avatar for others to see
         avatar: {
             type: String,
+            // when setting a default value in the schema you want to avoid giving the user the option to set the value on sign up. If they by chance do not enter a field then the default will override to be blank as well.
             default:
                 "https://cl.goliath.com/image/upload/t_tn,f_auto,q_auto,$h_480,$w_895/go/2020/01/baby-yoda-life-size-figure-584x600-895x480.jpg"
         },
@@ -73,6 +74,7 @@ const userSchema = new Schema(
             default: "User"
         },
         // the boards that the user is following
+        // for now we will not add this to our example app. But if you fork and clone this app maybe you can create the needed code for practice
         followingBoards: {
             type: [
                 {
@@ -83,6 +85,7 @@ const userSchema = new Schema(
         },
         // the users that this user is following
         // for now we will not add this to our example app. But if you fork and clone this app maybe you can create a route to do so as practice
+        // for now we will not add this to our example app. But if you fork and clone this app maybe you can create the needed code for practice
         followingUser: {
             type: [
                 {
