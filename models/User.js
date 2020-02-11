@@ -66,6 +66,7 @@ const userSchema = new Schema(
             type: Boolean
         },
         // all users set to User role, can only be upgraded to Mediator or Admin by an Admin.
+        // for now we will not add this to our example app. But if you fork and clone this app maybe you can create the needed code for practice
         role: {
             type: String,
             enum: ["User", "Mediator", "Admin"],
