@@ -17,7 +17,9 @@ document.addEventListener(
 );
 
 const checkMessageUpdates = () => {
-    if (bodyTag === "messageBoardDetails") {
+    // If reply is typed no update happens
+    const replyTyped = [...document.getElementsByName('reply')].every(reply => reply.value === '');
+    if (bodyTag === "messageBoardDetails" && replyTyped) {
         const location = window.location;
         console.log({ location });
         axios
