@@ -44,10 +44,10 @@ router.get("/details/:boardId/refresh", (req, res, next) => {
         })
         .populate("followers")
         .then(boardFromDB => {
-            console.log(">>>>>>>>>>>>>>>>> ", {
-                boardFromDB,
-                messages: boardFromDB.messages
-            });
+            // console.log(">>>>>>>>>>>>>>>>> ", {
+            //     boardFromDB,
+            //     messages: boardFromDB.messages
+            // });
             res.status(200).json(boardFromDB);
         })
         .catch(err => next(err));

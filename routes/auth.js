@@ -21,11 +21,9 @@ router.get("/login", (req, res, next) => {
 //     })
 // );
 router.post("/login", (req, res, next) => {
-
     // Find the user by the username
     User.findOne({ username: req.body.username })
         .then(userFromDB => {
-
             // If a user is not returned from a DB, send back message that no such user exists in DB
             if (userFromDB === null) {
                 res.render("auth/login", {
@@ -33,8 +31,8 @@ router.post("/login", (req, res, next) => {
                 });
                 return;
             }
-            
-            // Compare users encrypted password with an encrition from DB and redirect to home page if they match otherwise redirect to login
+
+            // Compare users encrypted password with an encryption from DB and redirect to home page if they match otherwise redirect to login
             if (bcrypt.compareSync(req.body.password, userFromDB.password)) {
                 req.session.user = userFromDB;
                 res.redirect("/");
@@ -82,8 +80,7 @@ router.post("/signup", (req, res, next) => {
             password: hashPass
         });
 
-
-        // save new user to the database and then set his session 
+        // save new user to the database and then set his session
         newUser
             .save()
             .then(newlyCreatedUser => {

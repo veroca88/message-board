@@ -37,7 +37,7 @@ router.post("/update/:messageId/:replyId", (req, res, next) => {
 
 // Create a new message
 router.post("/create/:boardId", (req, res, next) => {
-    // Logged in user is set as the messages author and the message is grabed from the body
+    // Logged in user is set as the messages author and the message is grabbed from the body
     const theMessage = req.body;
     theMessage.author = req.session.user._id;
 

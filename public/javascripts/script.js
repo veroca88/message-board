@@ -18,7 +18,9 @@ document.addEventListener(
 
 const checkMessageUpdates = () => {
     // If reply is typed no update happens
-    const replyTyped = [...document.getElementsByName('reply')].every(reply => reply.value === '');
+    const replyTyped = [...document.getElementsByName("reply")].every(
+        reply => reply.value === ""
+    );
 
     // If we are in the messageBoard and there is no reply typing we will get any new messages with AJAX
     if (bodyTag === "messageBoardDetails" && replyTyped) {
@@ -46,7 +48,6 @@ const appendInfoToBoardPage = boardInfoData => {
 
     divOfMessages.innerHTML = "";
 
-
     // if there are no messages to display inform the user
     if (reversedMessages.length === 0) {
         const newDiv = document.createElement("div");
@@ -58,7 +59,6 @@ const appendInfoToBoardPage = boardInfoData => {
         divOfMessages.appendChild(newDiv);
         return;
     }
-
 
     // for each of the messages we create a div with user which created it, message content, delete button, and any reply message we find
     reversedMessages.forEach((message, index) => {
@@ -98,19 +98,18 @@ const appendInfoToBoardPage = boardInfoData => {
     });
 };
 
-
 // Note that here Async - Await is being used - this is alternative to the promises and is newer ES syntax
 const createMessage = async event => {
     // prevent default behaviour(reload) of the page when a function is called
     event.preventDefault();
 
-    // when using async-await we need to suround asynchronous code with try and catch blocks in order to handle any errors
+    // when using async-await we need to surround asynchronous code with try and catch blocks in order to handle any errors
     try {
         console.log({ event });
         let messageInput = event.target.form.elements[0];
         const boardId = getIdFromEvent(event);
 
-        // await signifies that we will be waiting for the axios code to finsih before continiuing with code execution
+        // await signifies that we will be waiting for the axios code to finish before continuing with code execution
         const messageCreation = await axios.post(
             `${window.location.origin}/messages/create/${boardId}`,
             { message: messageInput.value }
@@ -136,7 +135,6 @@ const createReply = async event => {
 
         // get the id to which the reply relates to
         const messageId = getIdFromEvent(event);
-
 
         // make a new post request to the backend in order to store new reply message into the database
         const creatingReply = await axios.post(
