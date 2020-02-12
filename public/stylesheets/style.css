@@ -65,15 +65,15 @@ body {
         width: 11rem; }
       body .user__profile form .profile__name-input {
         display: flex;
-        width: 23rem;
         align-items: center;
         justify-content: space-around;
-        flex-direction: row; }
+        flex-direction: row;
+        width: 23rem; }
       body .user__profile form div.input-fields {
         display: flex;
-        width: 34rem;
         align-items: center;
         justify-content: space-around;
-        flex-direction: row; }
+        flex-direction: row;
+        width: 34rem; }
 
 /*# sourceMappingURL=style.css.map */
