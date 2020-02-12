@@ -44,5 +44,36 @@ body {
     border-bottom: 2px solid black;
     padding-bottom: 0.5rem;
     margin-bottom: 0.2rem; }
+  body .user__profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; }
+    body .user__profile img {
+      width: 15rem; }
+    body .user__profile div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column; }
+    body .user__profile form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column; }
+      body .user__profile form input {
+        width: 11rem; }
+      body .user__profile form .profile__name-input {
+        display: flex;
+        width: 23rem;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: row; }
+      body .user__profile form div.input-fields {
+        display: flex;
+        width: 34rem;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: row; }
 
 /*# sourceMappingURL=style.css.map */

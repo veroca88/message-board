@@ -13,7 +13,7 @@
   {{else}}
   {{#each board.messages}}
   <div class="messages__message-div">
-    <h4>{{this.author.username}}</h4>
+    <h4><a href="/users/profile/{{this.author._id}}">{{this.author.username}}</a></h4>
     <div>
       <h3>{{this.message}}</h3>
     </div>

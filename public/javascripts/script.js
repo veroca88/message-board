@@ -63,7 +63,9 @@ const appendInfoToBoardPage = boardInfoData => {
         messageDiv.className = "messages__message-div";
 
         messageDiv.innerHTML = `
-      <h4>${message.author.username}</h4>
+      <h4><a href="/users/profile/${message.author._id}">${
+            message.author.username
+        }</a></h4>
       <div>
         <h3>${message.message}</h3>
       </div>

@@ -9,6 +9,13 @@
 
 // when you first use irongenerate, make sure that you remove any styling that is in your css file so that it does not effect the styling that you are trying to achieve.
 
+@mixin center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 body {
     margin: 0;
     padding: 5vw 5vw 0;
@@ -77,6 +84,46 @@ body {
             border-bottom: 2px solid black;
             padding-bottom: 0.5rem;
             margin-bottom: 0.2rem;
+        }
+    }
+
+    .user {
+        &__profile {
+            @include center-content;
+
+            img {
+                width: 15rem;
+            }
+
+            div {
+                @include center-content;
+            }
+
+            form {
+                @include center-content;
+
+                input {
+                    width: 11rem;
+                }
+
+                .profile {
+                    &__name-input {
+                        display: flex;
+                        width: 23rem;
+                        align-items: center;
+                        justify-content: space-around;
+                        flex-direction: row;
+                    }
+                }
+
+                div.input-fields {
+                    display: flex;
+                    width: 34rem;
+                    align-items: center;
+                    justify-content: space-around;
+                    flex-direction: row;
+                }
+            }
         }
     }
 }

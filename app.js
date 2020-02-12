@@ -105,5 +105,6 @@ app.use("/auth", require("./routes/auth"));
 app.use("/boards", require("./routes/boards/boards"));
 app.use("/messages", require("./routes/messages/message"));
 app.use("/replies", require("./routes/replies/replies"));
+app.use("/users", require("./routes/users/users"));
 
 module.exports = app;

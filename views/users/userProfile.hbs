@@ -1,3 +1,78 @@
-<h2>{{currentUser.username}}'s Profile</h2>
+<div class="user__profile">
 
-<img src="{{currentUser.avatar}}" alt="">
+  {{#if userFromDB}}
+  <h2>{{userFromDB.username}}'s Profile</h2>
+
+  <div>
+    <img src="{{userFromDB.avatar}}" alt="user avatar">
+    <h3>{{userFromDB.firstName}} {{userFromDB.lastName}}</h3>
+
+    <h4>{{userFromDB.email}}</h4>
+    {{#each userFromDB.boards}}
+    <div class="board__board-names">
+      <a href="/boards/details/{{this._id}}">{{this.title}}</a>
+
+      <form action="/boards/delete/{{this._id}}" method="POST"><button>X</button></form>
+
+    </div>
+    {{/each}}
+  </div>
+  {{else}}
+  <h2>{{currentUser.username}}'s Profile</h2>
+
+  <form action="/users/profile/update" method="POST">
+    <label for="avatarInput"><img src="{{currentUser.avatar}}" alt="user avatar"></label>
+    <br>
+    <input id="avatarInput" type="text" name="avatar" value="{{currentUser.avatar}}" placeholder="avatar url">
+    <br>
+    <div class="profile__name-input">
+      <label for="firstNameInput"><input id="firstNameInput" type="text" name="firstName"
+          value="{{currentUser.firstName}}" placeholder="first name"></label>
+      <br>
+      <label for="lastNameInput"><input id="lastNameInput" type="text" name="lastName" value="{{currentUser.lastName}}"
+          placeholder="last name"></label>
+    </div>
+    <br>
+    <label for="emailInput"><input id="emailInput" type="text" name="email" value="{{currentUser.email}}"
+        placeholder="email"></label>
+    <br>
+    <button>Update Profile</button>
+  </form>
+  <br>
+  <h3>Generate Random Sprite Avatar</h3>
+  <form class="sprite-generator" action="/users/profile/avatar" method="POST">
+    <div class="input-fields">
+      <div>
+        <label for="spriteTypeInput">Sprite Type</label>
+        <select name="spriteType" id="spriteTypeInput">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="identicon">Identicon</option>
+          <option value="initials">Initials</option>
+          <option value="bottts">Bottts</option>
+          <option value="avataaars">Avataaars</option>
+          <option value="jdenticon">Jdenticon</option>
+          <option value="gridy">Gridy</option>
+          <option value="code">Code</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="wordInput">Enter random word identifier</label>
+        <input id="wordInput" type="text" name="wordIdentifier" placeholder="Raccoon">
+      </div>
+
+      <div>
+        <label for="moodInput">Mood</label>
+        <select name="mood" id="moodInput">
+          <option value="happy">Happy</option>
+          <option value="sad">Sad</option>
+          <option value="surprised">Surprised</option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <button>Generate Avatar</button>
+  </form>
+  {{/if}}
+  </divs>
