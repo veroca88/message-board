@@ -74,5 +74,17 @@
     <br>
     <button>Generate Avatar</button>
   </form>
+  <br>
+  <h3>Upload Avatar Image</h3>
+  {{!-- 2 things to note when using file upload is that in the form params you must include enctype="multipart/form-data". --}}
+  {{!-- the other thing to note is that the input type for file upload is of type file.  --}}
+  {{!-- If you forget to add these 2 things to your form then you will not be able to upload the image file --}}
+  <form class="sprite-generator" action="/users/profile/file-upload" method="POST" enctype="multipart/form-data">
+    <label for="imageUpload">Choose An Image File</label>
+    <input id="imageUpload" type="file" name="uploadedImage">
+    <br>
+    <button>Update Avatar</button>
+  </form>
+
   {{/if}}
   </divs>

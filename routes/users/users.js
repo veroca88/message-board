@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../../models/User");
+const cloudUpload = require("../../config/cloudinary-setup");
 
 // Here will create a route to lead to the users profile page in order to allow the user to modify and update their information.
 // Since we have currentUser set up as a local variable in the app.js, we will not have to get the users details from the DB prior to loading the details page.
@@ -14,6 +15,7 @@ router.post("/profile/update", (req, res, next) => {
     // since this route has a similar endpoint as the profile route when seeing another users profile, we have to add this route first so that when your app checks the routes in this file (starts at top and works its way down), then it will find this route first and not confuse the /update as being a /:userId since the id can be anything.
     User.findByIdAndUpdate(req.session.user._id, req.body, { new: true })
         .then(updatedUser => {
+            // we have to remember to set the user information after its been updated to req.session.user or the currentUser local variable we set up in app.js will have the old user info and wont display the changes
             req.session.user = updatedUser;
             res.redirect("back");
         })
@@ -34,11 +36,33 @@ router.post("/profile/avatar", (req, res, next) => {
         { new: true }
     )
         .then(updatedUser => {
+            // we have to remember to set the user information after its been updated to req.session.user or the currentUser local variable we set up in app.js will have the old user info and wont display the changes
             req.session.user = updatedUser;
             res.redirect("back");
         })
         .catch(err => next(err));
 });
+
+// on this route like the above route we will create an update for the users avatar. Though on this route we wont generate a sprite, we will instead allow the user to upload an image from their pc
+// you'll notice that this route has something that the other do not, it has cloudUpload.single('uploadedImage'). This is used to first send the image file info to cloudinary and run through the setup process. It will save the image file online and then return a url that we can then use to display that image. The return value for this will be file.url and file is added to your request. So in order to grab the url we would call req.file.url
+router.post(
+    "/profile/file-upload",
+
+    cloudUpload.single("uploadedImage"),
+    (req, res, next) => {
+        User.findByIdAndUpdate(
+            req.session.user._id,
+            { avatar: req.file.url },
+            { new: true }
+        )
+            .then(updatedUser => {
+                // we have to remember to set the user information after its been updated to req.session.user or the currentUser local variable we set up in app.js will have the old user info and wont display the changes
+                req.session.user = updatedUser;
+                res.redirect("back");
+            })
+            .catch(err => next(err));
+    }
+);
 
 // this route will lead to the same profile page as the above route but instead will be for when a user is visiting another users profile which will display the information only and not allow the current user to edit the profile.
 router.get("/profile/:userId", (req, res, next) => {
