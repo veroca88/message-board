@@ -26,6 +26,8 @@ const checkMessageUpdates = () => {
     if (bodyTag === "messageBoardDetails" && replyTyped) {
         const location = window.location;
 
+        console.log({location})
+
         // Axios get call is made to get any update for the board we are on
         axios
             .get(`${location.origin}${location.pathname}/refresh`)
@@ -84,8 +86,8 @@ const appendInfoToBoardPage = boardInfoData => {
         } Replies</a>
 
         <form action="/replies/create/${message._id}">
-          <label for="replyInput${index + 1}"> Reply </label>
-          <input id="replyInput${index + 1}" type="text" name="reply">
+          <label for="replyInput${index}"> Reply </label>
+          <input id="replyInput${index}" type="text" name="reply">
 
           <button onclick="createReply(event)"> Send Reply </button>
         </form>

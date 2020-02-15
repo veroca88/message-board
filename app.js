@@ -24,6 +24,7 @@ mongoose
         console.log(
             `Connected to Mongo! Database name: "${x.connections[0].name}"`
         );
+
     })
     .catch(err => {
         console.error("Error connecting to mongo", err);
@@ -84,7 +85,8 @@ app.use(flash());
 require("./passport")(app);
 
 app.use((req, res, next) => {
-    // here I will set a local variable for the body class. This is just another way that you can use local variables and for our purposes we will be doing this in order to track when we are in message boards details page
+    // here I will set a local variable for the body class. This is just another way that you can use local variables and for our purposes we will be doing this 
+    //in order to track when we are in message boards details page
     res.locals.bodyClass = "default";
 
     // thanks to passport we have access to req.session.user to get the current users information. By using res.locals to set the variable currentUser we can now call currentUser from any of our view pages since we are declaring it in the app.js

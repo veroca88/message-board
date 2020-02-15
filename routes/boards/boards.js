@@ -33,6 +33,8 @@ router.get("/", (req, res, next) => {
 // this route we will use to refresh the messages on the board details page so that we do not have to refresh the page over and over on new input. Thus allowing users to see newly added messages without them having to reload the page.
 // we will be calling this route from our script file and will place it before the initial details route so that we can catch the /refresh at the end of the endpoint
 // we are also using the same endpoint because it will require less coding to grab the url in our script file and thus we will not have to modify the url much.
+//ESTE ROUTE ES PARA LLAMAR AXIOS SIN NECESIDAD DE RECARGAR LA PAGINA Y LO QUE HACE ES AUTOMATIAMENTE SE ACTUALIZA PARA Q SE PUEDA VER LOS MENSAJES DE ULTIMO MOMENTO
+
 router.get("/details/:boardId/refresh", (req, res, next) => {
     Board.findById(req.params.boardId)
         .populate({
@@ -62,7 +64,8 @@ router.get("/details/:boardId", (req, res, next) => {
             const data = {
                 // this is a ternary operator. It is the same as doing an if else conditional statement but looks cleaner and can be used for conditional setting of values like the example below.
                 noMessages: boardFromDB.messages.length === 0 ? true : false,
-                board: boardFromDB
+                board: boardFromDB,
+                messages: boardFromDB.messages.reverse()
             };
             // here we will set the local variable for the bodyClass to be something other than what we set in app.js in order to track the page change. We can then use this for styling or script file(which is what we will be using it for).
             res.locals.bodyClass = "messageBoardDetails";
@@ -102,6 +105,10 @@ router.post("/create", (req, res, next) => {
                     // when using nested .thens, you have access to all variables previously assigned in the parent and grandparent thens in the child then which is why we can still call newlyCreatedBoard now.
 
                     // now using the newCreatedBoard variable we will redirect the user to the details page of the newly created board
+
+                    //every time we update the user on the db we must also updated the user information session.
+
+                    res.session.user = updatedUser;
                     res.redirect(`/boards/details/${newlyCreatedBoard._id}`);
                 })
                 .catch(err => next(err));
